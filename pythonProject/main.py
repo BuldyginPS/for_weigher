@@ -1,5 +1,8 @@
 from tkinter import Tk, Entry, StringVar, Button, Label
 #from pynput.keyboard import Key, Listener
+from time import sleep
+import keyboard
+
 
 root = Tk()
 
@@ -16,7 +19,7 @@ def get_value():
 def clean_value():
     v.set("")
 
-def str_wth_comma_to_float(str):
+def comma_str_to_float(str):
     buff=0
     # find ","
     i = 0
@@ -43,23 +46,44 @@ def on_press(key):
     print('{0} release'.format(key))
     global buff
     str = v.get()
-    buff=str_wth_comma_to_float(str)
+    buff=comma_str_to_float(str)
 
     #buff += float(v.get())
     get_value()
     clean_value()
+    #keyboard.send('A')
+def on_press2(key):
+    keyboard.press("a")
+    sleep(1)
+    keyboard.release("a")
+    print("happend")
 
-b1 = Button(root, text="get value", width=10, command=get_value)
-b2 = Button(root, text="clean", width=10, command=clean_value)
+def forced_btn_press():
+    i=0
+    while i!=2:
+        #keyboard.press("a")
+        sleep(0.5)
+        #keyboard.release("a")
+        keyboard.send("Ctrl")
+        print("happend")
+        i+=1
 
-b1.pack()
-b2.pack()
+
+get_value_btn = Button(root, text="get value", width=10, command=get_value)
+clean_btn = Button(root, text="clean", width=10, command=clean_value)
+start_btn = Button(root, text="start", width=10, command=forced_btn_press)
+
+get_value_btn.pack()
+clean_btn.pack()
+start_btn.pack()
 
 label = Label()
 label.pack()
 
 #root.bind('<Control_L>', on_press)
-root.bind('<Alt_L>', on_press)
-
+#keyboard.write("123,456")
+#keyboard.send("enter");
+root.bind('<Control_L>', on_press)
+root.bind('<Shift_L>', on_press2)
 
 root.mainloop()
